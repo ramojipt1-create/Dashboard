@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A premium interactive QA Testing Dashboard for Manual and Performance Testing tracking.">
+    <title>QA Testing Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <h2>QA Hub</h2>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active" data-tab="overview">
+                        <a href="#overview">
+                            <i data-lucide="layout-dashboard"></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
+                    <li data-tab="activities">
+                        <a href="#activities">
+                            <i data-lucide="activity"></i>
+                            <span>Activities</span>
+                        </a>
+                    </li>
+                    <li data-tab="targets">
+                        <a href="#targets">
+                            <i data-lucide="target"></i>
+                            <span>Future Targets</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme">
+                    <i data-lucide="sun" class="sun-icon"></i>
+                    <i data-lucide="moon" class="moon-icon"></i>
+                    <span>Switch Theme</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            
+            <!-- Top Navigation Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="search-bar">
+                        <i data-lucide="search"></i>
+                        <input type="text" id="global-search" placeholder="Search releases, projects, or metrics...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-date" id="header-date">
+                        <i data-lucide="calendar"></i>
+                        <span id="current-date-span">Loading date...</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256&auto=format&fit=crop" alt="User profile icon" id="profile-img">
+                        <div class="user-info">
+                            <span class="user-name">QA Architect</span>
+                            <span class="user-role">Lead Engineer</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-wrapper">
+
+                <!-- 1. OVERVIEW TAB -->
+                <section id="tab-overview" class="tab-panel active">
+                    <div class="page-header">
+                        <div>
+                            <h1>QA Dashboard Overview</h1>
+                            <p class="subtitle">Quick summary of active testing sprints, performance projects, and target progress.</p>
+                        </div>
+                    </div>
+
+                    <!-- Highlight Cards/Tiles Grid -->
+                    <div class="overview-grid">
+                        <!-- Manual Testing Card -->
+                        <div class="metric-card manual-card clickable" data-goto="manual">
+                            <div class="card-header">
+                                <div class="icon-wrapper">
+                                    <i data-lucide="terminal"></i>
+                                </div>
+                                <span class="card-tag">Manual Testing</span>
+                            </div>
+                            <div class="card-body">
+                                <h3 id="manual-overview-title">3 Releases Active</h3>
+                                <div class="stats-row">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Jira</span>
+                                        <span class="stat-val" id="manual-total-jira">30</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Test Cases</span>
+                                        <span class="stat-val text-primary" id="manual-total-cases">300</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Total Bugs</span>
+                                        <span class="stat-val text-danger" id="manual-total-bugs">15</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span>Sanity: <strong id="manual-total-sanity">150</strong> | Regression: <strong id="manual-total-regression">900</strong></span>
+                                <i data-lucide="arrow-right" class="arrow-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Performance Testing Card -->
+                        <div class="metric-card performance-card clickable" data-goto="performance">
+                            <div class="card-header">
+                                <div class="icon-wrapper">
+                                    <i data-lucide="zap"></i>
+                                </div>
+                                <span class="card-tag">Performance Testing</span>
+                            </div>
+                            <div class="card-body">
+                                <h3 id="performance-overview-title">3 Projects Profiled</h3>
+                                <div class="stats-row">
+                                    <div class="stat-item">
+                                        <span class="stat-label">APIs / Scripts</span>
+                                        <span class="stat-val" id="perf-total-scripts">30</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Load Runs</span>
+                                        <span class="stat-val text-accent" id="perf-total-loads">15</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Dry Runs</span>
+                                        <span class="stat-val text-success" id="perf-dry-percent">100%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span>Reports & Recommendations: <strong id="perf-reports-status">Ready</strong></span>
+                                <i data-lucide="arrow-right" class="arrow-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Future Targets Progress Card -->
+                        <div class="metric-card target-card clickable" data-goto="targets">
+                            <div class="card-header">
+                                <div class="icon-wrapper">
+                                    <i data-lucide="compass"></i>
+                                </div>
+                                <span class="card-tag">Future Targets</span>
+                            </div>
+                            <div class="card-body">
+                                <h3 id="target-overview-title">Roadmap Progress</h3>
+                                <div class="progress-container">
+                                    <div class="progress-bar-wrapper">
+                                        <div class="progress-bar" id="target-progress-bar" style="width: 50%;"></div>
+                                    </div>
+                                    <div class="progress-meta">
+                                        <span id="target-percent-text">50% Completed</span>
+                                        <span id="target-ratio-text">2 / 4 Targets</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span>Next: <strong id="target-next-milestone">QA automation sync</strong></span>
+                                <i data-lucide="arrow-right" class="arrow-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Visualization -->
+                    <div class="charts-section">
+                        <div class="chart-container-box">
+                            <div class="chart-header">
+                                <h3>Manual Testing Metrics</h3>
+                                <p class="chart-subtitle">Comparison of Test Cases vs Regression Tests vs Bugs per release</p>
+                            </div>
+                            <div class="canvas-wrapper">
+                                <canvas id="manualChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container-box">
+                            <div class="chart-header">
+                                <h3>Performance Testing Metrics</h3>
+                                <p class="chart-subtitle">Scripts, Test Data, and Load Tests distribution by project</p>
+                            </div>
+                            <div class="canvas-wrapper">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 2. ACTIVITIES TAB -->
+                <section id="tab-activities" class="tab-panel">
+                    <div class="page-header flex-header">
+                        <div>
+                            <h1>Testing Activities</h1>
+                            <p class="subtitle">Complete records of manual sprint testing and API load profiles.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" id="add-activity-btn">
+                                <i data-lucide="plus"></i>
+                                <span id="add-btn-text">Add Record</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Inner Tabs for Tables -->
+                    <div class="sub-tabs-container">
+                        <div class="sub-tabs">
+                            <button class="sub-tab active" data-subtab="manual">
+                                <i data-lucide="terminal"></i>
+                                <span>Manual Testing</span>
+                            </button>
+                            <button class="sub-tab" data-subtab="performance">
+                                <i data-lucide="zap"></i>
+                                <span>Performance Testing</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tables Area -->
+                    <div class="table-container-wrapper">
+                        <!-- Manual Table -->
+                        <div id="subtab-manual" class="subtab-panel active">
+                            <div class="table-wrapper">
+                                <table id="manual-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Release</th>
+                                            <th>Jira Tickets</th>
+                                            <th>Test Cases</th>
+                                            <th>Bugs Identified</th>
+                                            <th>Sanity Tests</th>
+                                            <th>Regression Tests</th>
+                                            <th class="actions-col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="manual-table-body">
+                                        <!-- Dynamically Generated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Performance Table -->
+                        <div id="subtab-performance" class="subtab-panel">
+                            <div class="table-wrapper">
+                                <table id="performance-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Project</th>
+                                            <th>Scripts / APIs</th>
+                                            <th>Test Data Size</th>
+                                            <th>Dry Run Status</th>
+                                            <th>Load Tests</th>
+                                            <th>Reports</th>
+                                            <th>Recommendations</th>
+                                            <th class="actions-col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="performance-table-body">
+                                        <!-- Dynamically Generated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 3. FUTURE TARGETS TAB -->
+                <section id="tab-targets" class="tab-panel">
+                    <div class="page-header">
+                        <div>
+                            <h1>Future Targets & Roadmap</h1>
+                            <p class="subtitle">Manage future QA objectives, automation integrations, and key validation milestones.</p>
+                        </div>
+                    </div>
+
+                    <div class="targets-workspace">
+                        <!-- Add New Target Panel -->
+                        <div class="target-form-card">
+                            <h3><i data-lucide="plus-circle"></i> Add New Target</h3>
+                            <form id="new-target-form">
+                                <div class="form-group">
+                                    <label for="target-title">Target Objective</label>
+                                    <input type="text" id="target-title" placeholder="e.g. Integrate Selenium in CI/CD pipeline" required>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="target-category">Category</label>
+                                        <select id="target-category">
+                                            <option value="Manual">Manual Testing</option>
+                                            <option value="Performance">Performance Testing</option>
+                                            <option value="Automation">Automation Testing</option>
+                                            <option value="Infrastructure">Infrastructure</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="target-date">Due Date</label>
+                                        <input type="date" id="target-date" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full">
+                                    <i data-lucide="plus"></i> Create Target
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Target List Display -->
+                        <div class="targets-list-container">
+                            <div class="list-header">
+                                <h3>Target Roadmap List</h3>
+                                <div class="filters">
+                                    <button class="filter-chip active" data-filter="all">All</button>
+                                    <button class="filter-chip" data-filter="pending">Pending</button>
+                                    <button class="filter-chip" data-filter="completed">Completed</button>
+                                </div>
+                            </div>
+                            <div class="targets-list" id="targets-list-element">
+                                <!-- Dynamically Generated Target Cards -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- Manual Activity Modal (Add/Edit) -->
+    <div class="modal-overlay" id="manual-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="manual-modal-title">Add Manual Testing Activity</h3>
+                <button class="modal-close" data-close="manual-modal">&times;</button>
+            </div>
+            <form id="manual-form">
+                <input type="hidden" id="manual-edit-index" value="">
+                <div class="form-group">
+                    <label for="manual-release">Release / Feature Name</label>
+                    <input type="text" id="manual-release" placeholder="e.g. Release 4: Payment Integration" required>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="manual-jira">Jira Tickets Count</label>
+                        <input type="number" id="manual-jira" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="manual-cases">Test Cases Count</label>
+                        <input type="number" id="manual-cases" min="0" required>
+                    </div>
+                </div>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label for="manual-bugs">Bugs Identified</label>
+                        <input type="number" id="manual-bugs" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="manual-sanity">Sanity Tests Run</label>
+                        <input type="number" id="manual-sanity" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="manual-regression">Regression Tests Run</label>
+                        <input type="number" id="manual-regression" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="manual-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Activity</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Performance Activity Modal (Add/Edit) -->
+    <div class="modal-overlay" id="performance-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="performance-modal-title">Add Performance Testing Activity</h3>
+                <button class="modal-close" data-close="performance-modal">&times;</button>
+            </div>
+            <form id="performance-form">
+                <input type="hidden" id="performance-edit-index" value="">
+                <div class="form-group">
+                    <label for="perf-project">Project Name</label>
+                    <input type="text" id="perf-project" placeholder="e.g. Project 4: Search Engine Scaling" required>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="perf-scripts">No. of Scripts/APIs</label>
+                        <input type="number" id="perf-scripts" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="perf-testdata">Test Data Size (records)</label>
+                        <input type="number" id="perf-testdata" min="0" required>
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="perf-dryrun">Dry Run Status</label>
+                        <select id="perf-dryrun">
+                            <option value="Passed">Passed</option>
+                            <option value="Failed">Failed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="perf-loadtests">Load Tests Executed</label>
+                        <input type="number" id="perf-loadtests" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="perf-reports">Report URI / Status Summary</label>
+                    <input type="text" id="perf-reports" placeholder="e.g. Completed. All response times within 200ms threshold." required>
+                </div>
+                <div class="form-group">
+                    <label for="perf-recs">Recommendations</label>
+                    <textarea id="perf-recs" rows="3" placeholder="e.g. Add Redis cache for products list endpoint, optimize DB query." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close="performance-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Activity</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Viewer Modal (For reading Reports and Recs in detail) -->
+    <div class="modal-overlay" id="viewer-modal">
+        <div class="modal-box modal-box-large">
+            <div class="modal-header">
+                <h3 id="viewer-modal-title">Detail View</h3>
+                <button class="modal-close" data-close="viewer-modal">&times;</button>
+            </div>
+            <div class="modal-body-content" id="viewer-modal-content">
+                <!-- Dynamically Populated -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-close="viewer-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
