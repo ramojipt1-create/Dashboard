@@ -1,48 +1,75 @@
 // ==========================================
-// DEFAULT SEED DATA
+// DEFAULT SEED DATA (UPDATED FROM LATEST METRICS & CURRENT DATE)
 // ==========================================
 
+const getTodayStr = (offsetDays = 0) => {
+    const d = new Date();
+    d.setDate(d.getDate() + offsetDays);
+    return d.toISOString().split('T')[0];
+};
+
 const DEFAULT_MANUAL_DATA = [
-    { release: "Release 1: HS code", jira: 10, cases: 100, bugs: 5, sanity: 50, regression: 300 },
-    { release: "Release 2: COD Offset", jira: 10, cases: 100, bugs: 5, sanity: 50, regression: 300 },
-    { release: "Release 3: COD Offset", jira: 10, cases: 100, bugs: 5, sanity: 50, regression: 300 }
+    { release: "11.5 Release", jira: 7, cases: 80, bugs: 3, sanity: 80, regression: 350 },
+    { release: "11.4 Release", jira: 8, cases: 100, bugs: 5, sanity: 80, regression: 350 },
+    { release: "11.3 and 11.2 Release", jira: 9, cases: 100, bugs: 4, sanity: 80, regression: 350 },
+    { release: "11.1 and 11.0 Release", jira: 12, cases: 130, bugs: 4, sanity: 80, regression: 350 },
+    { release: "10.9 Release", jira: 8, cases: 100, bugs: 2, sanity: 80, regression: 350 },
+    { release: "10.7 Release", jira: 6, cases: 50, bugs: 3, sanity: 80, regression: 350 }
 ];
 
 const DEFAULT_PERFORMANCE_DATA = [
     { 
-        project: "Project 1", 
+        project: "Load Test_PST 1", 
         scripts: 10, 
         testData: 100, 
         dryRun: "Passed", 
         loadTests: 5, 
-        reports: "Project 1 Load Test Report: Completed. Response time under 200ms at peak load (500 virtual users). Zero failures recorded.",
-        recommendations: "Project 1 Recommendations: \n- Set up Redis connection pool configuration to avoid socket leaks.\n- Scale database read-replicas for high concurrent select queries."
+        reports: "Load Test_PST 1 Report: Completed. Response time under 200ms at peak load (500 virtual users). Zero failures recorded.",
+        recommendations: "Load Test_PST 1 Recommendations:\n- Set up Redis connection pool configuration to avoid socket leaks.\n- Scale database read-replicas for high concurrent select queries."
     },
     { 
-        project: "Project 2", 
+        project: "Load Test_PST 2", 
         scripts: 10, 
         testData: 100, 
         dryRun: "Passed", 
         loadTests: 5, 
-        reports: "Project 2 API Load Report: Completed. CPU usage peaked at 85% with 200 concurrent requests/sec. Latency within SLA.",
-        recommendations: "Project 2 Recommendations:\n- Upgrade API Gateway instance type for better throughput.\n- Enable Gzip compression on JSON responses."
+        reports: "Load Test_PST 2 API Load Report: Completed. CPU usage peaked at 85% with 200 concurrent requests/sec. Latency within SLA.",
+        recommendations: "Load Test_PST 2 Recommendations:\n- Upgrade API Gateway instance type for better throughput.\n- Enable Gzip compression on JSON responses."
     },
     { 
-        project: "Project 3", 
+        project: "Load Test_PST 3", 
         scripts: 10, 
         testData: 100, 
         dryRun: "Passed", 
         loadTests: 5, 
-        reports: "Project 3 Benchmark Report: Completed. Checked all 10 endpoints under load. Average latency: 150ms.",
-        recommendations: "Project 3 Recommendations:\n- Optimize Elasticsearch indexing frequency for faster search metrics.\n- Implement HTTP caching for static config payload endpoints."
+        reports: "Load Test_PST 3 Benchmark Report: Completed. Checked all 10 endpoints under load. Average latency: 150ms.",
+        recommendations: "Load Test_PST 3 Recommendations:\n- Optimize Elasticsearch indexing frequency for faster search metrics.\n- Implement HTTP caching for static config payload endpoints."
+    },
+    { 
+        project: "Load Test_PST 4", 
+        scripts: 5, 
+        testData: 10000, 
+        dryRun: "Passed", 
+        loadTests: 3, 
+        reports: "Load Test_PST 4 High Volume Report: Completed. Processed 10,000 data records under load.",
+        recommendations: "Load Test_PST 4 Recommendations:\n- Tune batch database insert sizes.\n- Increase worker pool concurrency."
+    },
+    { 
+        project: "Load Test_PST 5", 
+        scripts: 6, 
+        testData: 10000, 
+        dryRun: "Passed", 
+        loadTests: 4, 
+        reports: "Load Test_PST 5 Load Test Report: Completed with 10,000 dataset size.",
+        recommendations: "Load Test_PST 5 Recommendations:\n- Scale memory allocation for cache nodes.\n- Optimize async background tasks."
     }
 ];
 
 const DEFAULT_TARGETS_DATA = [
-    { id: 1, title: "Complete automated API test suite for Release 2", category: "Automation", date: "2026-07-15", completed: false },
-    { id: 2, title: "Run scalability benchmark tests for Project 1", category: "Performance", date: "2026-07-28", completed: false },
-    { id: 3, title: "Set up bug triage workflow with Jira webhooks", category: "Infrastructure", date: "2026-08-05", completed: true },
-    { id: 4, title: "Review HS code regression results with stakeholders", category: "Manual", date: "2026-06-30", completed: true }
+    { id: 1, title: "Complete automated API test suite for Release 11.5", category: "Automation", date: getTodayStr(7), completed: false },
+    { id: 2, title: "Run scalability benchmark tests for Load Test_PST 4", category: "Performance", date: getTodayStr(14), completed: false },
+    { id: 3, title: "Set up bug triage workflow with Jira webhooks", category: "Infrastructure", date: getTodayStr(-2), completed: true },
+    { id: 4, title: "Review 11.5 Release regression results with stakeholders", category: "Manual", date: getTodayStr(0), completed: true }
 ];
 
 // ==========================================
@@ -50,9 +77,9 @@ const DEFAULT_TARGETS_DATA = [
 // ==========================================
 
 let state = {
-    manual: JSON.parse(localStorage.getItem("qa_manual_data")) || DEFAULT_MANUAL_DATA,
-    performance: JSON.parse(localStorage.getItem("qa_perf_data")) || DEFAULT_PERFORMANCE_DATA,
-    targets: JSON.parse(localStorage.getItem("qa_targets_data")) || DEFAULT_TARGETS_DATA,
+    manual: DEFAULT_MANUAL_DATA,
+    performance: DEFAULT_PERFORMANCE_DATA,
+    targets: DEFAULT_TARGETS_DATA,
     theme: localStorage.getItem("qa_dashboard_theme") || "dark"
 };
 
