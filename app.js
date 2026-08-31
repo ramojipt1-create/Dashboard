@@ -80,7 +80,7 @@ let state = {
     manual: DEFAULT_MANUAL_DATA,
     performance: DEFAULT_PERFORMANCE_DATA,
     targets: DEFAULT_TARGETS_DATA,
-    theme: localStorage.getItem("qa_dashboard_theme") || "dark"
+    theme: localStorage.getItem("qa_dashboard_theme") || "lightblue"
 };
 
 function saveState() {
@@ -135,16 +135,19 @@ function updateHeaderDate() {
     }
 }
 
-// Apply Dark/Light theme variables
+// Apply Dark/Light/LightBlue theme variables
 function applyTheme() {
     const body = document.body;
+    body.classList.remove("dark-theme", "light-theme", "lightblue-theme");
+    
     if (state.theme === "light") {
-        body.classList.remove("dark-theme");
         body.classList.add("light-theme");
-    } else {
-        body.classList.remove("light-theme");
+    } else if (state.theme === "dark") {
         body.classList.add("dark-theme");
+    } else {
+        body.classList.add("lightblue-theme");
     }
+    
     // Update charts to match theme grid lines if rendered
     updateChartColors();
 }
@@ -174,7 +177,10 @@ function setupThemeToggle() {
     const toggleBtn = document.getElementById("theme-toggle");
     if (toggleBtn) {
         toggleBtn.addEventListener("click", () => {
-            state.theme = state.theme === "dark" ? "light" : "dark";
+            if (state.theme === "lightblue") state.theme = "dark";
+            else if (state.theme === "dark") state.theme = "light";
+            else state.theme = "lightblue";
+            
             saveState();
             applyTheme();
         });
@@ -331,7 +337,7 @@ function renderOverview() {
     const passedDryRuns = state.performance.filter(item => item.dryRun === "Passed").length;
     const dryRunPercent = perfProjectsCount > 0 ? Math.round((passedDryRuns / perfProjectsCount) * 100) : 0;
 
-    document.getElementById("performance-overview-title").innerText = `${perfProjectsCount} Project${perfProjectsCount !== 1 ? 's' : ''} Profiled`;
+    document.getElementById("performance-overview-title").innerText = `${perfProjectsCount} Project${perfProjectsCount !== 1 ? 's' : ''}`;
     document.getElementById("perf-total-scripts").innerText = totalScripts;
     document.getElementById("perf-total-loads").innerText = totalLoads;
     document.getElementById("perf-dry-percent").innerText = `${dryRunPercent}%`;

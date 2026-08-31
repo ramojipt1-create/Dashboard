@@ -15,6 +15,36 @@
     --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.15);
 }
 
+.lightblue-theme {
+    --bg-primary: #f0f7ff;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e0f2fe;
+    --border-color: #bae6fd;
+    
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --text-white: #ffffff;
+    
+    --primary: #0284c7;
+    --primary-light: #0369a1;
+    --primary-bg: rgba(2, 132, 199, 0.12);
+    
+    --accent-emerald: #059669;
+    --accent-emerald-bg: rgba(5, 150, 105, 0.12);
+    --accent-amber: #d97706;
+    --accent-amber-bg: rgba(217, 119, 6, 0.12);
+    --accent-rose: #e11d48;
+    --accent-rose-bg: rgba(225, 29, 72, 0.12);
+    
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-blur: blur(12px);
+}
+
+body.lightblue-theme {
+    background: radial-gradient(circle at 10% 20%, rgba(186, 230, 253, 0.45) 0%, rgba(240, 247, 255, 1) 50%, rgba(224, 242, 254, 0.6) 100%);
+    background-attachment: fixed;
+}
+
 .dark-theme {
     --bg-primary: #0f172a;
     --bg-secondary: #1e293b;
