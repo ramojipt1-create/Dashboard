@@ -9,12 +9,12 @@ const getTodayStr = (offsetDays = 0) => {
 };
 
 const DEFAULT_MANUAL_DATA = [
-    { release: "11.5 Release", jira: 7, cases: 80, bugs: 3, sit: 80, pat: 80, regression: 350 },
-    { release: "11.4 Release", jira: 8, cases: 100, bugs: 5, sit: 100, pat: 100, regression: 350 },
-    { release: "11.3 and 11.2 Release", jira: 9, cases: 100, bugs: 4, sit: 100, pat: 100, regression: 350 },
-    { release: "11.1 and 11.0 Release", jira: 12, cases: 130, bugs: 4, sit: 130, pat: 130, regression: 350 },
-    { release: "10.9 Release", jira: 8, cases: 100, bugs: 2, sit: 100, pat: 100, regression: 350 },
-    { release: "10.7 Release", jira: 6, cases: 50, bugs: 3, sit: 50, pat: 50, regression: 350 }
+    { release: "11.5 Release", jira: 7, cases: 80, bugs: 3, sit: 80, bat: 80, regression: 350 },
+    { release: "11.4 Release", jira: 8, cases: 100, bugs: 5, sit: 100, bat: 100, regression: 350 },
+    { release: "11.3 and 11.2 Release", jira: 9, cases: 100, bugs: 4, sit: 100, bat: 100, regression: 350 },
+    { release: "11.1 and 11.0 Release", jira: 12, cases: 130, bugs: 4, sit: 130, bat: 130, regression: 350 },
+    { release: "10.9 Release", jira: 8, cases: 100, bugs: 2, sit: 100, bat: 100, regression: 350 },
+    { release: "10.7 Release", jira: 6, cases: 50, bugs: 3, sit: 50, bat: 50, regression: 350 }
 ];
 
 const DEFAULT_PERFORMANCE_DATA = [
@@ -321,7 +321,7 @@ function renderOverview() {
     const totalCases = state.manual.reduce((sum, item) => sum + parseInt(item.cases || 0), 0);
     const totalBugs = state.manual.reduce((sum, item) => sum + parseInt(item.bugs || 0), 0);
     const totalSit = state.manual.reduce((sum, item) => sum + parseInt(item.sit || 0), 0);
-    const totalPat = state.manual.reduce((sum, item) => sum + parseInt(item.pat || 0), 0);
+    const totalBat = state.manual.reduce((sum, item) => sum + parseInt(item.bat !== undefined ? item.bat : (item.pat || 0)), 0);
     const totalRegression = state.manual.reduce((sum, item) => sum + parseInt(item.regression || 0), 0);
 
     document.getElementById("manual-overview-title").innerText = `${manualReleasesCount} Release${manualReleasesCount !== 1 ? 's' : ''} Active`;
@@ -329,7 +329,7 @@ function renderOverview() {
     document.getElementById("manual-total-cases").innerText = totalCases;
     document.getElementById("manual-total-bugs").innerText = totalBugs;
     document.getElementById("manual-total-sit").innerText = totalSit;
-    document.getElementById("manual-total-pat").innerText = totalPat;
+    document.getElementById("manual-total-bat").innerText = totalBat;
     document.getElementById("manual-total-regression").innerText = totalRegression;
 
     // 2. Performance Testing Card Calculation
@@ -388,7 +388,7 @@ function renderManualTable() {
             <td><strong>${item.cases}</strong></td>
             <td><span class="badge ${item.bugs > 0 ? 'badge-danger' : 'badge-success'}">${item.bugs} Bugs</span></td>
             <td>${item.sit !== undefined ? item.sit : item.cases}</td>
-            <td>${item.pat !== undefined ? item.pat : item.cases}</td>
+            <td>${item.bat !== undefined ? item.bat : (item.pat !== undefined ? item.pat : item.cases)}</td>
             <td>${item.regression}</td>
             <td class="actions-col">
                 <div class="action-btns">
@@ -543,7 +543,7 @@ function renderCharts() {
         const labels = state.manual.map(m => m.release.replace("Release ", "R"));
         const testCasesData = state.manual.map(m => m.cases);
         const sitData = state.manual.map(m => m.sit !== undefined ? m.sit : m.cases);
-        const patData = state.manual.map(m => m.pat !== undefined ? m.pat : m.cases);
+        const batData = state.manual.map(m => m.bat !== undefined ? m.bat : (m.pat !== undefined ? m.pat : m.cases));
         const regressionData = state.manual.map(m => m.regression);
         const bugsData = state.manual.map(m => m.bugs * 10); // scale bugs for visualization
 
@@ -573,8 +573,8 @@ function renderCharts() {
                         borderRadius: 4
                     },
                     {
-                        label: 'PAT Env',
-                        data: patData,
+                        label: 'BAT Env',
+                        data: batData,
                         backgroundColor: 'rgba(14, 165, 233, 0.75)',
                         borderColor: 'rgb(14, 165, 233)',
                         borderWidth: 1,
@@ -782,7 +782,7 @@ function openManualModal(editIndex = null) {
         document.getElementById("manual-cases").value = item.cases;
         document.getElementById("manual-bugs").value = item.bugs;
         document.getElementById("manual-sit").value = item.sit !== undefined ? item.sit : item.cases;
-        document.getElementById("manual-pat").value = item.pat !== undefined ? item.pat : item.cases;
+        document.getElementById("manual-bat").value = item.bat !== undefined ? item.bat : (item.pat !== undefined ? item.pat : item.cases);
         document.getElementById("manual-regression").value = item.regression;
     } else {
         title.innerText = "Add Manual Testing Activity";
@@ -832,7 +832,8 @@ function setupForms() {
                 jira: parseInt(document.getElementById("manual-jira").value),
                 cases: parseInt(document.getElementById("manual-cases").value),
                 bugs: parseInt(document.getElementById("manual-bugs").value),
-                sanity: parseInt(document.getElementById("manual-sanity").value),
+                sit: parseInt(document.getElementById("manual-sit").value),
+                bat: parseInt(document.getElementById("manual-bat").value),
                 regression: parseInt(document.getElementById("manual-regression").value)
             };
 
