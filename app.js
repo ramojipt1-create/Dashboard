@@ -25,7 +25,7 @@ const DEFAULT_PERFORMANCE_DATA = [
         dryRun: "Passed", 
         loadTests: 5, 
         reports: "Load Test_PST 1 Report: Completed. Response time under 200ms at peak load (500 virtual users). Zero failures recorded.",
-        recommendations: "Load Test_PST 1 Recommendations:\n- Set up Redis connection pool configuration to avoid socket leaks.\n- Scale database read-replicas for high concurrent select queries."
+        recommendations: ""
     },
     { 
         project: "Load Test_PST 2", 
@@ -34,7 +34,7 @@ const DEFAULT_PERFORMANCE_DATA = [
         dryRun: "Passed", 
         loadTests: 5, 
         reports: "Load Test_PST 2 API Load Report: Completed. CPU usage peaked at 85% with 200 concurrent requests/sec. Latency within SLA.",
-        recommendations: "Load Test_PST 2 Recommendations:\n- Upgrade API Gateway instance type for better throughput.\n- Enable Gzip compression on JSON responses."
+        recommendations: ""
     },
     { 
         project: "Load Test_PST 3", 
@@ -43,7 +43,7 @@ const DEFAULT_PERFORMANCE_DATA = [
         dryRun: "Passed", 
         loadTests: 5, 
         reports: "Load Test_PST 3 Benchmark Report: Completed. Checked all 10 endpoints under load. Average latency: 150ms.",
-        recommendations: "Load Test_PST 3 Recommendations:\n- Optimize Elasticsearch indexing frequency for faster search metrics.\n- Implement HTTP caching for static config payload endpoints."
+        recommendations: ""
     },
     { 
         project: "Load Test_PST 4", 
@@ -52,7 +52,7 @@ const DEFAULT_PERFORMANCE_DATA = [
         dryRun: "Passed", 
         loadTests: 3, 
         reports: "Load Test_PST 4 High Volume Report: Completed. Processed 10,000 data records under load.",
-        recommendations: "Load Test_PST 4 Recommendations:\n- Tune batch database insert sizes.\n- Increase worker pool concurrency."
+        recommendations: ""
     },
     { 
         project: "Load Test_PST 5", 
@@ -61,7 +61,7 @@ const DEFAULT_PERFORMANCE_DATA = [
         dryRun: "Passed", 
         loadTests: 4, 
         reports: "Load Test_PST 5 Load Test Report: Completed with 10,000 dataset size.",
-        recommendations: "Load Test_PST 5 Recommendations:\n- Scale memory allocation for cache nodes.\n- Optimize async background tasks."
+        recommendations: ""
     }
 ];
 
@@ -945,19 +945,30 @@ window.viewReports = function(index) {
 
 window.viewRecommendations = function(index) {
     const item = state.performance[index];
-    const recsHTML = escapeHTML(item.recommendations)
-        .replace(/\n/g, '<br>')
-        .replace(/-\s+(.*?)(<br>|$)/g, '<li>$1</li>');
+    const rawRecs = (item.recommendations || "").trim();
+    
+    let content = "";
+    if (rawRecs) {
+        const recsHTML = escapeHTML(rawRecs)
+            .replace(/\n/g, '<br>')
+            .replace(/-\s+(.*?)(<br>|$)/g, '<li>$1</li>');
 
-    const content = `
-        <div class="view-item">
-            <h4>Optimizations for ${escapeHTML(item.project)}</h4>
-            <p>Based on performance metrics under peak loads, the following updates are recommended:</p>
-            <ul>
-                ${recsHTML.includes("<li>") ? recsHTML : `<li>${recsHTML}</li>`}
-            </ul>
-        </div>
-    `;
+        content = `
+            <div class="view-item">
+                <h4>Optimizations for ${escapeHTML(item.project)}</h4>
+                <p>Based on performance metrics under peak loads, the following updates are recommended:</p>
+                <ul>
+                    ${recsHTML.includes("<li>") ? recsHTML : `<li>${recsHTML}</li>`}
+                </ul>
+            </div>
+        `;
+    } else {
+        content = `
+            <div class="view-item" style="text-align: center; color: var(--text-muted); padding: 20px 0;">
+                <p>No recommendations recorded for ${escapeHTML(item.project)} yet.</p>
+            </div>
+        `;
+    }
     openViewerModal(`Recommendations: ${item.project}`, content);
 };
 

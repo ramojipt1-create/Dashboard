@@ -59,6 +59,13 @@ body.lightblue-theme {
     background-attachment: fixed;
 }
 
+body.dark-theme {
+    background: linear-gradient(-45deg, #090d16, #0f172a, #1e293b, #0369a1, #0284c7, #0f172a);
+    background-size: 400% 400%;
+    animation: bgBlueAnimation 18s ease infinite;
+    background-attachment: fixed;
+}
+
 .dark-theme {
     --bg-primary: #0f172a;
     --bg-secondary: #1e293b;
