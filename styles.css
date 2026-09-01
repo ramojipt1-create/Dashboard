@@ -40,8 +40,22 @@
     --glass-blur: blur(12px);
 }
 
+@keyframes bgBlueAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 body.lightblue-theme {
-    background: radial-gradient(circle at 10% 20%, rgba(186, 230, 253, 0.45) 0%, rgba(240, 247, 255, 1) 50%, rgba(224, 242, 254, 0.6) 100%);
+    background: linear-gradient(-45deg, #e0f2fe, #bae6fd, #f0f9ff, #7dd3fc, #38bdf8);
+    background-size: 400% 400%;
+    animation: bgBlueAnimation 15s ease infinite;
     background-attachment: fixed;
 }
 

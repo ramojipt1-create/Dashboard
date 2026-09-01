@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <span>Sanity: <strong id="manual-total-sanity">150</strong> | Regression: <strong id="manual-total-regression">900</strong></span>
+                                <span>SIT: <strong id="manual-total-sit">0</strong> | PAT: <strong id="manual-total-pat">0</strong> | Reg: <strong id="manual-total-regression">0</strong></span>
                                 <i data-lucide="arrow-right" class="arrow-icon"></i>
                             </div>
                         </div>
@@ -258,7 +258,8 @@
                                             <th>Jira Tickets</th>
                                             <th>Test Cases</th>
                                             <th>Bugs Identified</th>
-                                            <th>Sanity Tests</th>
+                                            <th>SIT</th>
+                                            <th>PAT</th>
                                             <th>Regression Tests</th>
                                             <th class="actions-col">Actions</th>
                                         </tr>
@@ -381,14 +382,20 @@
                         <input type="number" id="manual-cases" min="0" required>
                     </div>
                 </div>
-                <div class="form-grid-3">
+                <div class="form-grid-2">
                     <div class="form-group">
                         <label for="manual-bugs">Bugs Identified</label>
                         <input type="number" id="manual-bugs" min="0" required>
                     </div>
                     <div class="form-group">
-                        <label for="manual-sanity">Sanity Tests Run</label>
-                        <input type="number" id="manual-sanity" min="0" required>
+                        <label for="manual-sit">SIT Tests</label>
+                        <input type="number" id="manual-sit" min="0" required>
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="manual-pat">PAT Tests</label>
+                        <input type="number" id="manual-pat" min="0" required>
                     </div>
                     <div class="form-group">
                         <label for="manual-regression">Regression Tests Run</label>
