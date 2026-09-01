@@ -565,7 +565,7 @@ function renderCharts() {
                         borderRadius: 4
                     },
                     {
-                        label: 'SIT',
+                        label: 'SIT Env',
                         data: sitData,
                         backgroundColor: 'rgba(59, 130, 246, 0.75)',
                         borderColor: 'rgb(59, 130, 246)',
@@ -573,7 +573,7 @@ function renderCharts() {
                         borderRadius: 4
                     },
                     {
-                        label: 'PAT',
+                        label: 'PAT Env',
                         data: patData,
                         backgroundColor: 'rgba(14, 165, 233, 0.75)',
                         borderColor: 'rgb(14, 165, 233)',
